@@ -8,11 +8,16 @@
 import Parse
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITableViewDataSource {
     
+    @IBOutlet weak var tableView: UITableView!
+    var posts: [PFObject] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        fetchData()
+        tableView.dataSource = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 50
         // Do any additional setup after loading the view.
     }
 
@@ -34,13 +39,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-
+    func fetchData(){
         let query = Post.query()
         query?.order(byDescending: "createdAt")
         query?.includeKey("author")
@@ -49,14 +48,28 @@ class MainViewController: UIViewController {
         // fetch data asynchronously
         query?.findObjectsInBackground { (Post, error: Error?) -> Void in
             if let posts = Post {
-                print(posts)
-                print("you there fam?")
-//                cell.postImageView = posts[]
-//                cell.captionLabel = posts[]
+                self.posts = posts
+                //print(self.posts[9])
+                self.tableView.reloadData()
             } else {
-                print("User log out failed: \(error?.localizedDescription)")
+                print("fetch data failed: \(error?.localizedDescription)")
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
+        //print(indexPath.row)
+        let post = posts[indexPath.row]
+        let caption = post["caption"] as! String
+        //let image = post["media"]
+        
+        cell.captionLabel.text = caption
+        
         
         return cell
     }
