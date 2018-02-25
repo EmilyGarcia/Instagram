@@ -49,10 +49,12 @@ class LoginViewController: UIViewController {
                 print(error.localizedDescription)
             } else {
                 print("User Registered successfully")
-                // manually segue to logged in view
                 if error?._code == 202 {
                     print("Username taken")
                 }
+               
+                // display view controller that needs to shown after successful login
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
             }
         }
     }
