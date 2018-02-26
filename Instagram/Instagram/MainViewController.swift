@@ -20,18 +20,17 @@ class MainViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         //fetchData()
         
-    self.activityIndicator.startAnimating()
-    refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: #selector(MainViewController.didPullToRefresh(_:) ), for: . valueChanged)
-    
-    didPullToRefresh(refreshControl)
-    tableView.insertSubview(refreshControl, at: 0)
+        self.activityIndicator.startAnimating()
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(MainViewController.didPullToRefresh(_:) ), for: . valueChanged)
+        
+        didPullToRefresh(refreshControl)
+        tableView.insertSubview(refreshControl, at: 0)
         
         
         tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 50
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,7 +59,6 @@ class MainViewController: UIViewController, UITableViewDataSource {
         let query = Post.query()
         query?.order(byDescending: "createdAt")
         query?.includeKey("author")
-        query?.includeKey("createdAt")
         query?.limit = 20
         
         // fetch data asynchronously

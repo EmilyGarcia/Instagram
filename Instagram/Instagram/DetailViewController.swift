@@ -23,7 +23,10 @@ class DetailViewController: UIViewController {
         if let post = post {
             print(post)
             captionLabel.text = post["caption"] as? String
-//            timeStampLabel.text = post["_created_at"] as? String
+            let dateCreated = post.createdAt! as Date
+            let dateFormat = DateFormatter()
+            dateFormat.dateFormat = "EEE, MMM d, h:mm a"
+            timeStampLabel.text = NSString(format: "%@", dateFormat.string(from: dateCreated)) as String
             let imageFile = post["media"] as? PFFile
             
             if let imageFile : PFFile = imageFile {

@@ -45,7 +45,7 @@ class ComposeViewController: UIViewController, UIImagePickerControllerDelegate, 
         let newImage = resize(image: originalImage, newSize: CGSize(width: 300, height: 300))
         
         // Do something with the images (based on your use case)
-        self.photoImageView.image = newImage
+        self.photoImageView.image = originalImage
         
         // Dismiss UIImagePickerController to go back to your original view controller
         dismiss(animated: true, completion: nil)
